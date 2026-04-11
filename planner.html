@@ -3,28 +3,146 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Planner</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Open+Sans&display=swap" rel="stylesheet">
 
 <style>
-body{background:#0f0f14;color:white;font-family:Arial;padding:20px;}
-h1{color:#D4AF37;}
-.card{background:#1a1a22;padding:20px;border-radius:12px;}
+body{
+    margin:0;
+    padding:30px;
+    font-family:'Open Sans';
+    background: linear-gradient(135deg,#F5F0E7,#FAF7F2);
+    color:#111;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+h1{
+    font-family:'Playfair Display';
+    text-align:center;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+}
+
+/* CARD */
+.card{
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(10px);
+    padding:25px;
+    margin:25px 0;
+    border-radius:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.06);
+}
+
+/* INPUT */
+.input{
+    width:100%;
+    padding:14px;
+    margin:10px 0;
+    border-radius:12px;
+    border:1px solid rgba(0,0,0,0.08);
+    font-size:14px;
+}
+
+/* WEEK TAG */
+.week-tag{
+    text-align:center;
+    font-weight:bold;
+    color:#D4AF37;
+    margin-bottom:20px;
+}
 </style>
 </head>
 
 <body>
 
-<h1>📓 Planner Experience</h1>
+<div class="container">
 
+<h1>Soft Life Weekly Planner</h1>
+<p class="subtitle">Plan your week with clarity and control</p>
+
+<div class="week-tag" id="weekLabel"></div>
+
+<!-- DAILY SECTION -->
 <div class="card">
-<h2>Daily Focus</h2>
-<p>- Top 3 priorities<br>- Mood check<br>- Simple tasks only</p>
+<h2>Weekly Focus</h2>
+
+<input class="input" id="focus" placeholder="Weekly Main Focus">
+<input class="input" id="goal1" placeholder="Top Priority 1">
+<input class="input" id="goal2" placeholder="Top Priority 2">
+<input class="input" id="goal3" placeholder="Top Priority 3">
+
 </div>
 
+<!-- DAILY WELLBEING -->
 <div class="card">
-<h2>Weekly Structure</h2>
-<p>- Goals<br>- Habits<br>- Reset day</p>
+<h2>Wellness Check</h2>
+
+<input class="input" id="mood" placeholder="Mood for the week">
+<input class="input" id="energy" placeholder="Energy level">
+<input class="input" id="selfcare" placeholder="Self-care plan">
+
 </div>
+
+<!-- ORGANIZATION -->
+<div class="card">
+<h2>Life Organization</h2>
+
+<input class="input" id="finances" placeholder="Finances focus">
+<input class="input" id="routine" placeholder="Routine improvement">
+<input class="input" id="mindset" placeholder="Mindset shift">
+
+</div>
+
+</div>
+
+<script>
+
+const inputs = document.querySelectorAll(".input");
+
+const WEEK_KEY = "softlife_week_id";
+
+/* GET WEEK ID (changes every Monday) */
+function getWeekId(){
+    let now = new Date();
+    let day = now.getDay();
+    let diff = now.getDate() - day + (day === 0 ? -6 : 1);
+    let monday = new Date(now.setDate(diff));
+    monday.setHours(0,0,0,0);
+    return "week_" + monday.getTime();
+}
+
+/* LOAD WEEK */
+function initWeek(){
+    let weekId = getWeekId();
+
+    document.getElementById("weekLabel").innerText = "Current Week: " + weekId;
+
+    inputs.forEach(input=>{
+        let key = weekId + "_" + input.id;
+
+        // load saved
+        let saved = localStorage.getItem(key);
+        if(saved){
+            input.value = saved;
+        }
+
+        // save on input
+        input.addEventListener("input", ()=>{
+            localStorage.setItem(key, input.value);
+        });
+    });
+}
+
+initWeek();
+
+</script>
 
 </body>
   </html>
