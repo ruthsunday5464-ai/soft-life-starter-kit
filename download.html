@@ -3,92 +3,166 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Soft Life Hub</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Open+Sans&display=swap" rel="stylesheet">
 
 <style>
 body{
     margin:0;
-    font-family: Arial;
-    background:#0f0f14;
-    color:white;
+    font-family:'Open Sans';
+    background: linear-gradient(135deg,#F5F0E7,#FAF7F2);
+    color:#111;
 }
 
+/* HEADER */
+.header{
+    text-align:center;
+    padding:40px 20px 10px;
+}
+
+.header h1{
+    font-family:'Playfair Display';
+    font-size:40px;
+    margin:0;
+}
+
+.header p{
+    color:#666;
+}
+
+/* GRID */
 .container{
-    max-width:900px;
+    max-width:1000px;
     margin:auto;
     padding:20px;
 }
 
-h1{
-    text-align:center;
-    color:#D4AF37;
-    margin-bottom:5px;
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
 }
 
-.sub{
-    text-align:center;
-    color:#aaa;
-    margin-bottom:30px;
-}
-
+/* CARD */
 .card{
-    background:#1a1a22;
-    padding:20px;
-    margin:15px 0;
-    border-radius:14px;
-    border:1px solid #2a2a35;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(10px);
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.06);
+    border:1px solid rgba(212,175,55,0.15);
+    transition:0.3s;
 }
 
-h2{
+.card:hover{
+    transform:translateY(-4px);
+}
+
+/* TITLE */
+.card h2{
+    font-family:'Playfair Display';
     color:#D4AF37;
 }
 
+/* BUTTON */
 .btn{
-    display:block;
+    display:inline-block;
     margin-top:15px;
-    padding:12px;
-    text-align:center;
+    padding:12px 20px;
     background:#D4AF37;
-    color:black;
+    color:white;
     text-decoration:none;
-    border-radius:10px;
+    border-radius:12px;
     font-weight:bold;
+}
+
+/* STATS BAR */
+.stats{
+    display:flex;
+    justify-content:space-between;
+    margin:20px 0;
+    font-size:14px;
+    color:#444;
+}
+
+/* STREAK */
+.streak{
+    text-align:center;
+    font-size:18px;
+    color:#D4AF37;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+/* TOP BOX */
+.top{
+    text-align:center;
+    margin-top:10px;
 }
 </style>
 </head>
 
 <body>
 
+<div class="header">
+    <h1>Soft Life System</h1>
+    <p>Your private transformation dashboard</p>
+</div>
+
 <div class="container">
 
-<h1>💎 Soft Life Hub</h1>
-<p class="sub">Your premium digital experience is ready</p>
+<!-- STATS -->
+<div class="card top">
 
-<div class="card">
-<h2>📓 Planner System</h2>
-<p>Build structure, clarity and control over your daily life.</p>
-<a class="btn" href="planner.html">Open Planner Experience</a>
-</div>
+    <div class="stats">
+        <span>Weekly Access</span>
+        <span>Active</span>
+    </div>
 
-<div class="card">
-<h2>💭 Affirmations System</h2>
-<p>Reprogram your mindset for calm, success and abundance.</p>
-<a class="btn" href="affirmations.html">Open Affirmations</a>
-</div>
-
-<div class="card">
-<h2>🌿 Routine System</h2>
-<p>Create a soft, peaceful and structured daily lifestyle.</p>
-<a class="btn" href="routine.html">Open Routine Guide</a>
-</div>
-
-<div class="card">
-<h2>✨ Glow-Up System</h2>
-<p>Upgrade your habits, discipline and environment.</p>
-<a class="btn" href="checklist.html">Open Checklist</a>
-</div>
+    <div class="streak">
+        🔥 Streak: <span id="streak">0</span> days
+    </div>
 
 </div>
+
+<!-- GRID MENU -->
+<div class="grid">
+
+    <div class="card">
+        <h2>📅 Weekly Planner</h2>
+        <p>Plan your week with clarity and structure.</p>
+        <a class="btn" href="planner.html">Open Planner</a>
+    </div>
+
+    <div class="card">
+        <h2>✅ Habit Tracker</h2>
+        <p>Track discipline and build consistency.</p>
+        <a class="btn" href="checklist.html">Open Checklist</a>
+    </div>
+
+    <div class="card">
+        <h2>🌙 Routine Guide</h2>
+        <p>Morning & evening structure for balance.</p>
+        <a class="btn" href="routine.html">Open Routine</a>
+    </div>
+
+    <div class="card">
+        <h2>💭 Affirmations</h2>
+        <p>Rewire your mindset daily.</p>
+        <a class="btn" href="affirmations.html">Open Affirmations</a>
+    </div>
+
+</div>
+
+</div>
+
+<script>
+
+/* STREAK SYSTEM (shared with checklist) */
+let streak = localStorage.getItem("softlife_streak") || 0;
+document.getElementById("streak").innerText = streak;
+
+</script>
 
 </body>
-</html>
+    </html>
