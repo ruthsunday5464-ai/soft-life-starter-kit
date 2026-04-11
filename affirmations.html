@@ -3,28 +3,102 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Affirmations</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Open+Sans&display=swap" rel="stylesheet">
 
 <style>
-body{background:#0f0f14;color:white;font-family:Arial;padding:20px;}
-h1{color:#D4AF37;}
-.card{background:#1a1a22;padding:20px;border-radius:12px;}
+body{
+    margin:0;
+    padding:30px;
+    font-family:'Open Sans';
+    background: linear-gradient(135deg,#F5F0E7,#FAF7F2);
+    color:#111;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+h1{
+    font-family:'Playfair Display';
+    text-align:center;
+    font-size:38px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+    margin-bottom:25px;
+}
+
+/* CARD */
+.card{
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(10px);
+    padding:25px;
+    margin:20px 0;
+    border-radius:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.06);
+    border:1px solid rgba(212,175,55,0.15);
+}
+
+/* AFFIRMATION TEXT */
+textarea{
+    width:100%;
+    height:220px;
+    padding:15px;
+    border-radius:12px;
+    border:1px solid rgba(0,0,0,0.1);
+    font-size:15px;
+    font-family:'Open Sans';
+    resize:none;
+    background:#fff;
+}
+
+/* LABEL */
+.label{
+    font-family:'Playfair Display';
+    color:#D4AF37;
+    margin-bottom:10px;
+}
 </style>
 </head>
 
 <body>
 
-<h1>💭 Affirmations</h1>
+<div class="container">
+
+<h1>Soft Life Affirmations</h1>
+<p class="subtitle">Write. Read. Rewire your mindset.</p>
 
 <div class="card">
-<p>
-I am calm and in control.<br>
-I attract abundance easily.<br>
-I deserve a soft life.<br>
-I am becoming my best self.<br>
-I choose peace over pressure.
-</p>
+    <div class="label">Your Affirmations</div>
+    <textarea id="aff"></textarea>
 </div>
+
+</div>
+
+<script>
+
+let key = "softlife_affirmations";
+
+let box = document.getElementById("aff");
+
+/* LOAD */
+box.value = localStorage.getItem(key) || 
+`I am calm and in control.
+I attract abundance easily.
+I deserve a soft life.
+I am becoming my best self.
+I choose peace over pressure.`;
+
+/* SAVE */
+box.addEventListener("input", ()=>{
+    localStorage.setItem(key, box.value);
+});
+
+</script>
 
 </body>
 </html>
