@@ -3,28 +3,129 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Routine</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Open+Sans&display=swap" rel="stylesheet">
 
 <style>
-body{background:#0f0f14;color:white;font-family:Arial;padding:20px;}
-h1{color:#D4AF37;}
-.card{background:#1a1a22;padding:20px;border-radius:12px;}
+body{
+    margin:0;
+    padding:30px;
+    font-family:'Open Sans';
+    background: linear-gradient(135deg,#F5F0E7,#FAF7F2);
+    color:#111;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+h1{
+    font-family:'Playfair Display';
+    text-align:center;
+    font-size:38px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+}
+
+/* CARD */
+.card{
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(10px);
+    padding:25px;
+    margin:20px 0;
+    border-radius:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.06);
+    border:1px solid rgba(212,175,55,0.15);
+}
+
+/* INPUT */
+textarea{
+    width:100%;
+    height:120px;
+    padding:14px;
+    margin-top:10px;
+    border-radius:12px;
+    border:1px solid rgba(0,0,0,0.1);
+    font-size:14px;
+    resize:none;
+}
+
+/* LABEL */
+.label{
+    font-family:'Playfair Display';
+    color:#D4AF37;
+    margin-top:10px;
+}
 </style>
 </head>
 
 <body>
 
-<h1>🌿 Routine Guide</h1>
+<div class="container">
+
+<h1>Soft Life Routine Guide</h1>
+<p class="subtitle">Your weekly rhythm for balance and clarity</p>
 
 <div class="card">
-<h2>Morning</h2>
-<p>- Wake calmly<br>- No phone scrolling<br>- Set intentions</p>
+    <h2 style="font-family:'Playfair Display'; color:#D4AF37;">Morning Routine</h2>
+
+    <div class="label">Wake Up Flow</div>
+    <textarea id="m1"></textarea>
+
+    <div class="label">Intentions</div>
+    <textarea id="m2"></textarea>
+
+    <div class="label">Productivity Start</div>
+    <textarea id="m3"></textarea>
 </div>
 
 <div class="card">
-<h2>Evening</h2>
-<p>- Reflect<br>- Reset mind<br>- Sleep peacefully</p>
+    <h2 style="font-family:'Playfair Display'; color:#D4AF37;">Evening Routine</h2>
+
+    <div class="label">Wind Down</div>
+    <textarea id="e1"></textarea>
+
+    <div class="label">Reflection</div>
+    <textarea id="e2"></textarea>
+
+    <div class="label">Reset Mind</div>
+    <textarea id="e3"></textarea>
 </div>
+
+</div>
+
+<script>
+
+function getWeek(){
+    let now = new Date();
+    let day = now.getDay();
+    let diff = now.getDate() - day + (day === 0 ? -6 : 1);
+    let monday = new Date(now.setDate(diff));
+    monday.setHours(0,0,0,0);
+    return "week_" + monday.getTime();
+}
+
+let week = getWeek();
+
+/* ALL KEYS */
+let fields = ["m1","m2","m3","e1","e2","e3"];
+
+fields.forEach(id=>{
+    let el = document.getElementById(id);
+    let key = week + "_" + id;
+
+    el.value = localStorage.getItem(key) || "";
+
+    el.addEventListener("input", ()=>{
+        localStorage.setItem(key, el.value);
+    });
+});
+
+</script>
 
 </body>
 </html>
