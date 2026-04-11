@@ -3,28 +3,252 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checklist</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Open+Sans&display=swap" rel="stylesheet">
 
 <style>
-body{background:#0f0f14;color:white;font-family:Arial;padding:20px;}
-h1{color:#D4AF37;}
-.card{background:#1a1a22;padding:20px;border-radius:12px;}
+body{
+    margin:0;
+    padding:30px;
+    font-family:'Open Sans';
+    background: linear-gradient(135deg, #F5F0E7, #FAF7F2);
+    color:#111;
+}
+
+/* MAIN WRAPPER */
+.container{
+    max-width:950px;
+    margin:auto;
+}
+
+/* TITLE */
+h1{
+    font-family:'Playfair Display';
+    text-align:center;
+    font-size:38px;
+    margin-bottom:5px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+    margin-bottom:25px;
+}
+
+/* DASHBOARD */
+.dashboard{
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(12px);
+    padding:20px;
+    border-radius:18px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+    border:1px solid rgba(212,175,55,0.15);
+    margin-bottom:25px;
+}
+
+.stats{
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+    margin-top:10px;
+}
+
+/* PROGRESS BAR */
+.progress-bar{
+    width:100%;
+    height:12px;
+    background:#eee;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:10px;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+    background: linear-gradient(90deg, #D4AF37, #f5d67a);
+    transition:0.4s;
+}
+
+/* STREAK BADGE */
+.streak{
+    margin-top:10px;
+    font-weight:bold;
+    color:#D4AF37;
+}
+
+/* CARD */
+.card{
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(10px);
+    padding:25px;
+    margin:25px 0;
+    border-radius:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.06);
+    border:1px solid rgba(0,0,0,0.05);
+}
+
+/* TASK ITEM */
+.task{
+    display:flex;
+    align-items:center;
+    margin:12px 0;
+    font-size:16px;
+}
+
+.task input{
+    margin-right:12px;
+    transform:scale(1.2);
+}
+
+/* HEADER STYLE */
+h2{
+    font-family:'Playfair Display';
+    color:#D4AF37;
+    margin-bottom:10px;
+}
 </style>
 </head>
 
 <body>
 
-<h1>✨ Glow-Up Checklist</h1>
+<div class="container">
 
-<div class="card">
-<p>
-✔ Declutter your space<br>
-✔ Improve habits<br>
-✔ Protect your peace<br>
-✔ Stay consistent<br>
-✔ Upgrade your mindset
-</p>
+<h1>Soft Life Tracker</h1>
+<p class="subtitle">Build discipline. Stay soft. Stay consistent.</p>
+
+<!-- DASHBOARD -->
+<div class="dashboard">
+
+    <div class="stats">
+        <span id="completed">Completed: 0</span>
+        <span id="percent">0%</span>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="bar"></div>
+    </div>
+
+    <div class="streak">
+        🔥 Streak: <span id="streak">0</span> days
+    </div>
+
 </div>
 
+<!-- TASKS -->
+<div class="card">
+<h2>Weekly Habits</h2>
+
+<div class="task"><input type="checkbox" id="t1"> Morning routine</div>
+<div class="task"><input type="checkbox" id="t2"> Drink water</div>
+<div class="task"><input type="checkbox" id="t3"> Stay productive</div>
+<div class="task"><input type="checkbox" id="t4"> Complete priorities</div>
+<div class="task"><input type="checkbox" id="t5"> Avoid distractions</div>
+<div class="task"><input type="checkbox" id="t6"> Self-care moment</div>
+<div class="task"><input type="checkbox" id="t7"> Reflection</div>
+<div class="task"><input type="checkbox" id="t8"> Plan next week</div>
+
+</div>
+
+</div>
+
+<script>
+
+const boxes = document.querySelectorAll("input[type='checkbox']");
+const total = boxes.length;
+
+const WEEK_KEY = "softlife_week";
+const STREAK_KEY = "softlife_streak";
+const LAST_KEY = "softlife_last";
+
+/* TODAY */
+function today(){
+    return new Date().toDateString();
+}
+
+/* MONDAY WEEK START */
+function weekStart(){
+    let d = new Date();
+    let day = d.getDay();
+    let diff = d.getDate() - day + (day === 0 ? -6 : 1);
+    let monday = new Date(d.setDate(diff));
+    monday.setHours(0,0,0,0);
+    return monday.getTime();
+}
+
+/* RESET WEEK */
+function resetWeek(){
+    boxes.forEach(b=>{
+        b.checked = false;
+        localStorage.setItem(b.id,"false");
+    });
+}
+
+/* WEEK CHECK */
+function checkWeek(){
+    let saved = localStorage.getItem(WEEK_KEY);
+    let current = weekStart();
+
+    if(!saved){
+        localStorage.setItem(WEEK_KEY,current);
+    } else {
+        if(Number(saved) !== current){
+            resetWeek();
+            localStorage.setItem(WEEK_KEY,current);
+        }
+    }
+}
+
+/* STREAK */
+function updateStreak(){
+    let t = today();
+    let last = localStorage.getItem(LAST_KEY);
+    let streak = parseInt(localStorage.getItem(STREAK_KEY)) || 0;
+
+    if(last !== t){
+        streak += 1;
+        localStorage.setItem(STREAK_KEY, streak);
+        localStorage.setItem(LAST_KEY, t);
+    }
+
+    document.getElementById("streak").innerText = streak;
+}
+
+/* PROGRESS */
+function updateProgress(){
+    let done = 0;
+
+    boxes.forEach(b=>{
+        if(b.checked) done++;
+        localStorage.setItem(b.id,b.checked);
+    });
+
+    let percent = Math.round((done/total)*100);
+
+    document.getElementById("completed").innerText = "Completed: " + done;
+    document.getElementById("percent").innerText = percent + "%";
+    document.getElementById("bar").style.width = percent + "%";
+
+    updateStreak();
+}
+
+/* LOAD */
+function load(){
+    boxes.forEach(b=>{
+        if(localStorage.getItem(b.id)==="true"){
+            b.checked = true;
+        }
+        b.addEventListener("change", updateProgress);
+    });
+
+    updateProgress();
+}
+
+/* INIT */
+checkWeek();
+load();
+
+</script>
+
 </body>
-</html>
+  </html>
