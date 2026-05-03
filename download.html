@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script>
+(function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const isPaid = urlParams.get("paid");
+
+  if (isPaid !== "true") {
+    // Not coming from Paystack → block access
+    window.location.href = "index.html";
+  } else {
+    // Save access so user doesn’t lose it on refresh
+    localStorage.setItem("softlife_access", "granted");
+  }
+
+  // Allow access if already granted before
+  if (localStorage.getItem("softlife_access") === "granted") {
+    return;
+  }
+})();
+    </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
